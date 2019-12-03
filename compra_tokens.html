@@ -60,8 +60,8 @@
     <div class="card text-white bg-secondary my-5 py-4 text-center">
       <div class="card-body">
 
-        <p>Comprar Tokens</p>
-        <p class="text-white m-0">Cada token custa 0.0001 Ether.</p>
+        <p>Comprar Fichas</p>
+        <p class="text-white m-0">Cada Ficha custa 10 Gwei.</p>
 
       </div>
     </div>
@@ -75,7 +75,7 @@
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Meus Tokens</h6>
+                        <h6 class="my-0">Minhas Fichas</h6>
                         <small class="text-muted" id="endereco">-</small>
                     </div>
                     <span id="total-fichas" class="text-muted"></span>
@@ -151,7 +151,7 @@
   {    
       var quant = document.getElementById("quantidade").value;
       var preco = 10000000000*quant;
-      return cassino.methods.comprarFichas(quant).send({ from: userAccount, value: preco}).then(refreshData);
+      return cassino.methods.comprarFichas().send({ from: userAccount, value: preco}).then(refreshData);
   }
 
   function refreshData() 
@@ -192,7 +192,7 @@
           console.log('No web3? You should consider trying MetaMask!')
           web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
       }
-      
+
       web3 = new Web3(web3Provider);
       startApp()
 
