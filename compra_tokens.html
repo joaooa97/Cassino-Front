@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Cassino</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/small-business.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Cassino</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.html">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Comprar Tokens</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="top_premios.html">Top Prêmios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="resgate.html">Resgate</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Call to Action Well -->
+    <div class="card text-white bg-secondary my-5 py-4 text-center">
+      <div class="card-body">
+
+        <p>Comprar Tokens</p>
+        <p class="text-white m-0">Cada token custa 0.0001 Ether.</p>
+
+      </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+      <div class="col-md order-md mb">
+        <form class="card p-2">
+
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Meus Tokens</h6>
+                        <small class="text-muted" id="endereco">-</small>
+                    </div>
+                    <span id="total-rifas" class="text-muted"></span>
+                </li>
+            </ul>
+
+            <div class="input-group">
+                <input type="text" class="form-control" id="quantidade" placeholder="Quantidade">
+                <div class="input-group-append">
+                    <button type="button" onclick="comprarFichas()" class="btn btn-secondary">Comprar tokens!</button>
+                </div>
+            </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.row -->
+
+    <br>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <script>
+  var ficha;
+  var cassino;
+  var userAccount;
+  var acc;
+
+  function startApp() 
+  {
+
+      var cassinoAddress = "0x502c4a75328037c4C640de91B7EA22487178d432";
+      var fichaAddress   = "0x6e9D5ecb69de32b17B6212caB20ca91272F0f592";
+
+      cassino = new web3.eth.Contract(abi, cassinoAddress);
+      ficha   = new web3.eth.Contract(abi, fichaAddress);
+
+      var accountInterval = setInterval(function ()
+      {
+
+          web3.eth.getAccounts().then(function (result) 
+          {
+              acc = result[0];
+          })
+
+          if (acc !== userAccount) 
+          {
+              userAccount = acc;
+              refreshData();
+          }
+          
+      }, 100);
+
+  }
+
+  // Métodos do Contrato das Fichas
+  function verFichas() 
+  {
+      return ficha.methods.myBalance().call({from: userAccount});
+  }
+
+  // Métodos do Contrato do Cassino
+  function comprarFichas()
+  {    
+      var quant = document.getElementById("quantidade").value;
+      var preco = 10000000000*quant;
+      return cassino.methods.comprarFichas(quant).send({ from: userAccount, value: preco}).then(refreshData);;
+  }
+  </script>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
