@@ -157,6 +157,7 @@
       }
       else
       {
+        alert("Tentando resgatar " + quant + " fichas, de " + max);
         cassino.methods.resgatarEthers(quant).call({ from: userAccount }).then(refreshData);
         document.getElementById("quantidade").value = "";
       }
@@ -170,6 +171,7 @@
   function resgatarTudo()
   {    
     var max = document.getElementById("total-fichas").value;
+    alert("Tentando resgatar todas as " + max + " fichas.");
     cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
     document.getElementById("quantidade").value = "";
   }
