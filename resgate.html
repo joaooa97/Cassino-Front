@@ -108,7 +108,7 @@
     <!-- /.container -->
   </footer>
 
-    <script>
+  <script>
   var ficha;
   var cassino;
   var userAccount;
@@ -143,47 +143,35 @@
     return ficha.methods.myBalance().call({from: userAccount});
   }
 
-  // Métodos do Contrato do Cassino
-  function comprarFichas()
-  {    
-    var quant = document.getElementById("quantidade").value;
-    var preco = 10000000000*quant;
-    document.getElementById("quantidade").value = "";
-    return cassino.methods.comprarFichas().send({ from: userAccount, value: preco}).then(refreshData);
-  }
-  
+  // Métodos do Contrato do Cassino  
   function resgatarQtd()
   {    
-    verFichas().then((max) => 
-    {
-      var quant = document.getElementById("quantidade").value;
+    var max = document.getElementById("total-fichas").value;
+    var quant = document.getElementById("quantidade").value;
 
-      if( quant > 0 )
+    if( quant > 0 )
+    {
+      if( quant > max )
       {
-        if( quant > max )
-        {
-          alert("Você não possui esta quantidade de Fichas.");
-        }
-        else
-        {
-          cassino.methods.resgatarEthers(quant).call({ from: userAccount }).then(refreshData);
-          document.getElementById("quantidade").value = "";
-        }
+        alert("Você não possui esta quantidade de Fichas.");
       }
       else
       {
-        alert("Digite uma quantidade positiva de Fichas.");
+        cassino.methods.resgatarEthers(quant).call({ from: userAccount }).then(refreshData);
+        document.getElementById("quantidade").value = "";
       }
-    });
+    }
+    else
+    {
+      alert("Digite uma quantidade positiva de Fichas.");
+    }
   }
 
   function resgatarTudo()
   {    
-    verFichas().then((max) => 
-    {
-      cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
-      document.getElementById("quantidade").value = "";
-    });
+    var max = document.getElementById("total-fichas").value;
+    cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
+    document.getElementById("quantidade").value = "";
   }
 
   function refreshData() 
