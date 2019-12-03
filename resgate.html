@@ -154,32 +154,36 @@
   
   function resgatarQtd()
   {    
-    var max = ficha.methods.myBalance().call({from: userAccount});
-    var quant = document.getElementById("quantidade").value;
-
-    if( quant > 0 )
+    verFichas().then((max) => 
     {
-      if( quant > max )
+      var quant = document.getElementById("quantidade").value;
+
+      if( quant > 0 )
       {
-        alert("Você não possui esta quantidade de Fichas.");
+        if( quant > max )
+        {
+          alert("Você não possui esta quantidade de Fichas.");
+        }
+        else
+        {
+          cassino.methods.resgatarEthers(quant).call({ from: userAccount }).then(refreshData);
+          document.getElementById("quantidade").value = "";
+        }
       }
       else
       {
-        cassino.methods.resgatarEthers(quant).call({ from: userAccount }).then(refreshData);
-        document.getElementById("quantidade").value = "";
+        alert("Digite uma quantidade positiva de Fichas.");
       }
-    }
-    else
-    {
-      alert("Digite uma quantidade positiva de Fichas.");
     }
   }
 
   function resgatarTudo()
   {    
-    var max = ficha.methods.myBalance().call({from: userAccount});
-    cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
-    document.getElementById("quantidade").value = "";
+    verFichas().then((max) => 
+    {
+      cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
+      document.getElementById("quantidade").value = "";
+    }
   }
 
   function refreshData() 
