@@ -151,7 +151,7 @@
   {    
       var quant = document.getElementById("quantidade").value;
       var preco = 10000000000*quant;
-      document.getElementById("quantidade").value = 0;
+      document.getElementById("quantidade").value = "";
       return cassino.methods.comprarFichas().send({ from: userAccount, value: preco}).then(refreshData);
   }
 
