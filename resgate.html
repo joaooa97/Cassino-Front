@@ -174,7 +174,7 @@
       {
         alert("Digite uma quantidade positiva de Fichas.");
       }
-    }
+    });
   }
 
   function resgatarTudo()
@@ -183,7 +183,7 @@
     {
       cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
       document.getElementById("quantidade").value = "";
-    }
+    });
   }
 
   function refreshData() 
