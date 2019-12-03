@@ -143,9 +143,17 @@
     return ficha.methods.myBalance().call({from: userAccount});
   }
 
+  function verSaldoEther() 
+  {
+    return cassino.methods.verSaldoEther().call({from: userAccount});
+  }
+
   // Métodos do Contrato do Cassino  
   function resgatarQtd()
   {    
+    verSaldoEther().then((result) => { alert("Saldo em Ether = " + result) ;});
+    alert("Tentando sacar = " + (8000000000 * quant) );
+    
     var max = document.getElementById("total-fichas").innerHTML;
     var quant = document.getElementById("quantidade").value;
 
