@@ -55,8 +55,8 @@
     <div class="card text-white bg-secondary my-5 py-4 text-center">
       <div class="card-body">
 
-        <p>Resgate de Premios</p>
-        <p class="text-white m-0">No resgate, cada token custa 0.00001 Ether.</p>
+        <p>Resgate de Fichas</p>
+        <p class="text-white m-0">No resgate, cada Ficha custa 8 Gwei.</p>
 
       </div>
     </div>
@@ -70,7 +70,7 @@
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Meus Tokens</h6>
+                        <h6 class="my-0">Minhas Fichas</h6>
                         <small class="text-muted" id="endereco">-</small>
                     </div>
                     <span id="total-rifas" class="text-muted"></span>
@@ -102,6 +102,124 @@
     </div>
     <!-- /.container -->
   </footer>
+
+    <script>
+  var ficha;
+  var cassino;
+  var userAccount;
+  var acc;
+
+  function startApp() 
+  {
+    var cassinoAddress = "0x502c4a75328037c4C640de91B7EA22487178d432";
+    var fichaAddress   = "0x6e9D5ecb69de32b17B6212caB20ca91272F0f592";
+
+    cassino = new web3.eth.Contract(abiCassino, cassinoAddress);
+    ficha   = new web3.eth.Contract(abiFicha, fichaAddress);
+
+    var accountInterval = setInterval(function ()
+    {
+      web3.eth.getAccounts().then(function (result) 
+      {
+          acc = result[0];
+      })
+
+      if (acc !== userAccount) 
+      {
+          userAccount = acc;
+          refreshData();
+      } 
+    }, 100);
+  }
+
+  // Métodos do Contrato das Fichas
+  function verFichas() 
+  {
+    return ficha.methods.myBalance().call({from: userAccount});
+  }
+
+  // Métodos do Contrato do Cassino
+  function comprarFichas()
+  {    
+    var quant = document.getElementById("quantidade").value;
+    var preco = 10000000000*quant;
+    document.getElementById("quantidade").value = "";
+    return cassino.methods.comprarFichas().send({ from: userAccount, value: preco}).then(refreshData);
+  }
+  
+  function resgatarQtd()
+  {    
+    var max = ficha.methods.myBalance().call({from: userAccount});
+    var quant = document.getElementById("quantidade").value;
+
+    if( quant > 0 )
+    {
+      if( quant > max )
+      {
+        alert("Você não possui esta quantidade de Fichas.");
+      }
+      else
+      {
+        cassino.methods.resgatarEthers(quant).call({ from: userAccount }).then(refreshData);
+        document.getElementById("quantidade").value = "";
+      }
+    }
+    else
+    {
+      alert("Digite uma quantidade positiva de Fichas.");
+    }
+  }
+
+  function resgatarTudo()
+  {    
+    var max = ficha.methods.myBalance().call({from: userAccount});
+    cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
+    document.getElementById("quantidade").value = "";
+  }
+
+  function refreshData() 
+  {
+    verFichas().then((result) => {document.getElementById("total-fichas").innerHTML = result;});
+    document.getElementById("endereco").innerHTML = userAccount;
+  }
+
+  // Padrão para detectar um web3 injetado.
+  window.addEventListener('load', function () 
+  {
+
+    web3Provider = null;
+    // Modern dapp browsers...
+    if (window.ethereum) 
+    {
+      web3Provider = window.ethereum;
+
+      try 
+      {
+          // Request account access
+          window.ethereum.enable();
+      } 
+      catch (error) 
+      {
+          // User denied account access...
+          console.error("User denied account access")
+      }
+    }
+    // Legacy dapp browsers...
+    else if (window.web3) 
+    {
+      web3Provider = window.web3.currentProvider;
+    }
+    // If no injected web3 instance is detected, fall back to Ganache
+    else 
+    {
+      console.log('No web3? You should consider trying MetaMask!')
+      web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    }
+
+    web3 = new Web3(web3Provider);
+    startApp()
+  })
+  </script>
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
