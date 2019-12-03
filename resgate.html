@@ -146,7 +146,7 @@
   // Métodos do Contrato do Cassino  
   function resgatarQtd()
   {    
-    var max = document.getElementById("total-fichas").value;
+    var max = document.getElementById("total-fichas").innerHTML;
     var quant = document.getElementById("quantidade").value;
 
     if( quant > 0 )
@@ -170,7 +170,7 @@
 
   function resgatarTudo()
   {    
-    var max = document.getElementById("total-fichas").value;
+    var max = document.getElementById("total-fichas").innerHTML;
     alert("Tentando resgatar todas as " + max + " fichas.");
     cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
     document.getElementById("quantidade").value = "";
