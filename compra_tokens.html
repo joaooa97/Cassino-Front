@@ -73,7 +73,7 @@
                         <h6 class="my-0">Meus Tokens</h6>
                         <small class="text-muted" id="endereco">-</small>
                     </div>
-                    <span id="total-rifas" class="text-muted"></span>
+                    <span id="total-fichas" class="text-muted"></span>
                 </li>
             </ul>
 
@@ -148,6 +148,12 @@
       var preco = 10000000000*quant;
       return cassino.methods.comprarFichas(quant).send({ from: userAccount, value: preco}).then(refreshData);;
   }
+
+  function refreshData() 
+  {
+    verFichas().then((result) => {document.getElementById("total-fichas").innerHTML = result;});
+  }
+  
   </script>
 
   <!-- Bootstrap core JavaScript -->
