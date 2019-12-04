@@ -299,7 +299,9 @@
   }
 
   function fazerApostaRoleta()
-  {    
+  { 
+  	var valid = true;
+
 	valor = document.getElementById("quantidade").value;
 
 	if( tipoAposta == 0 )
@@ -309,45 +311,48 @@
 		if( aposta <= 0 || aposta > 36)
 		{
 			alert("Aposta fora dos limites !");
+			valid = false;
 		}
-		else
-		{
-		  	alert("Tipo Aposta: " + tipoAposta + " Aposta: " + aposta + " Valor: " + valor);
+	}
 
-		  	var max = parseInt(document.getElementById("total-fichas").innerHTML);
+	if( valid )
+	{
+	  	alert("Tipo Aposta: " + tipoAposta + " Aposta: " + aposta + " Valor: " + valor);
 
-		    if( valor > 0 )
-		    {
-		      if( valor > max )
-		      {
-		        alert("Você não possui esta quantidade de Fichas.");
-		      }
-		      else
-		      {
-		        // Teste para pegar varios retornos.
-		        apostar().then((result) => 
-		        {
-		        	alert("Valor 1: " + result[0]);
-		        	alert("Valor 2: " + result[1]);
-		        	alert("Valor 3: " + result[2]);
-		        	alert("Valor 4: " + result[3]);
-		        	
-		        	//girarRoleta(numero);
-		        	// Fazer alguma coisa aqui caso ganhe.
+	  	var max = parseInt(document.getElementById("total-fichas").innerHTML);
 
-		        	refreshData();
-		        });
+	    if( valor > 0 )
+	    {
+	      if( valor > max )
+	      {
+	        alert("Você não possui esta quantidade de Fichas.");
+	      }
+	      else
+	      {
+	      	
+	        // Teste para pegar varios retornos.
+	        apostar().then((result) => 
+	        {
+	        	alert("Valor 1: " + result[0]);
+	        	alert("Valor 2: " + result[1]);
+	        	alert("Valor 3: " + result[2]);
+	        	alert("Valor 4: " + result[3]);
+	        	
+	        	//girarRoleta(numero);
+	        	// Fazer alguma coisa aqui caso ganhe.
 
-		        document.getElementById("quantidade").value = "";
-		      }
-		    }
-		    else
-		    {
-		      alert("Digite uma quantidade positiva de Fichas.");
-		    }
+	        	refreshData();
+	        });
 
-		    document.getElementById("quantidade").value = "";
-		}
+	        document.getElementById("quantidade").value = "";
+	      }
+	    }
+	    else
+	    {
+	      alert("Digite uma quantidade positiva de Fichas.");
+	    }
+
+	    document.getElementById("quantidade").value = "";
 	}
   }
 
