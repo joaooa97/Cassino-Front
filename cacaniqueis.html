@@ -161,6 +161,8 @@
         cassino.methods.apostarCacaNiqueis(valor).send({from: userAccount}).then(function(receipt)
         {
           //console.log( receipt );
+          console.log(receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]);
+
           var numeros = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["resultado"];
           var ganhou  = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["ganhou"];
           var premio  = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["premio"];
