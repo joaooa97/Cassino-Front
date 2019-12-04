@@ -173,7 +173,7 @@ function infinitySpin()
   //get location
   var temp = numberLoc[0][0] + 4;
 
-  //randomize
+  //randomize.
   var rndSpace = Math.floor(Math.random() * 360 + 1);
 
   resetAni();
