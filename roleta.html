@@ -343,6 +343,16 @@
 	        	// console.log( "Ganhou: " + ganhou);
 	        	// console.log( "Premio: " + premio);
 	        	girarRoleta(numero);
+
+	        	if( ganhou )
+	        	{
+	        		alert("Você Ganhou " + premio + "Fichas!");
+	        	}
+	        	else
+	        	{
+	        		alert("Você Perdeu!");
+	        	}
+	        	
 	        	refreshData();
 
 			    });
