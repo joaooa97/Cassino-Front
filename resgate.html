@@ -145,7 +145,7 @@
 
   function resgate(qtdFichas)
   {
-    return cassino.methods.resgatarEthers(qtdFichas).call({ from: userAccount });
+    return cassino.methods.resgatarEthers(qtdFichas).send({ from: userAccount });
   }
 
   // Métodos do Contrato do Cassino  
