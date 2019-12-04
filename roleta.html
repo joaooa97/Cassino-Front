@@ -331,7 +331,13 @@
 	      {
 	      	
 	        // Teste para pegar varios retornos.
-	        apostar().then((result) => 
+	        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({from: userAccount}).then(function(receipt)
+	        {
+	        	console.log( receipt );
+			    // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
+			});
+
+	        /*apostar().then((result) => 
 	        {
 	        	var numero = result[0]; 
 	        	var cor = result[1];
@@ -343,11 +349,10 @@
 	        	// alert("Ganhou: " + result[2]);
 	        	// alert("Premio: " + result[3]);
 	        	
-	        	girarRoleta(numero);
+	        	girarRoleta(numero);*/
 	        	// Fazer alguma coisa aqui caso ganhe.
 
-	        	refreshData();
-	        });
+	        	//refreshData();
 
 	        document.getElementById("quantidade").value = "";
 	      }
@@ -359,12 +364,6 @@
 
 	    document.getElementById("quantidade").value = "";
 	}
-  }
-
-  function apostar()
-  {
-  	cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount });
-  	return cassino.methods.apostarRoleta(tipoAposta,aposta,valor).call({ from: userAccount });        
   }
 
   function refreshData() 
