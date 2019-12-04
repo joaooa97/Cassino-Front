@@ -166,25 +166,6 @@ function resetAni()
   $("#rotate").html("");
 }
 
-infinity = true;
-
-async function infinitySpin()
-{
-  //get location
-  var temp = numberLoc[0][0] + 4;
-
-  //randomize.
-  var rndSpace = Math.floor(Math.random() * 360 + 1);
-
-  resetAni();
-
-  while( infinity )
-  {
-    bgrotateTo(rndSpace);
-    ballrotateTo(rndSpace + temp);
-  }
-}
-
 function spinTo(num)
 {
   infinity = false;
