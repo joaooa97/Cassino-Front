@@ -131,25 +131,23 @@ function createWheel() {
   //console.log(numberLoc);
 }
 
-btnSpin.click(function() {
-  if ($("input").val() == "") {
+function girarRoleta(valor) 
+{
+  if( valor == "") 
+  {
     var rndNum = Math.floor(Math.random() * 34 + 0);
-  } else {
+  } 
+  else 
+  {
     var rndNum = $("input").val();
   }
 
   winningNum = rndNum;
   spinTo(winningNum);
-});
+}
 
-$("#btnb").click(function() {
-  $(".spinner").css("font-size", "+=.3em");
-});
-$("#btns").click(function() {
-  $(".spinner").css("font-size", "-=.3em");
-});
-
-function resetAni() {
+function resetAni() 
+{
   animationPlayState = "animation-play-state";
   playStateRunning = "running";
 
@@ -168,7 +166,8 @@ function resetAni() {
   $("#rotate").html("");
 }
 
-function spinTo(num) {
+function spinTo(num)
+{
   //get location
   var temp = numberLoc[num][0] + 4;
 
@@ -176,7 +175,8 @@ function spinTo(num) {
   var rndSpace = Math.floor(Math.random() * 360 + 1);
 
   resetAni();
-  setTimeout(function() {
+  setTimeout(function() 
+  {
     bgrotateTo(rndSpace);
     ballrotateTo(rndSpace + temp);
   }, 500);
