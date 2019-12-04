@@ -128,7 +128,7 @@ function createWheel() {
     $(newHold).appendTo(newSlice);
     $(newSlice).appendTo(rinner);
   }
-  console.log(numberLoc);
+  //console.log(numberLoc);
 }
 
 function girarRoleta(valor) 
