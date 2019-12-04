@@ -55,8 +55,8 @@
     <div class="card text-white bg-secondary my-5 py-4 text-center">
       <div class="card-body">
 
-        <p>Resgate de Premios</p>
-        <p class="text-white m-0">No resgate, cada token custa 0.00001 Ether.</p>
+        <p>Caça Níqueis</p>
+        <p class="text-white m-0">Digite o valor que deseja apostar, e clique em apostar.</p>
 
       </div>
     </div>
@@ -70,18 +70,17 @@
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Meus Tokens</h6>
+                        <h6 class="my-0">Minhas Fichas</h6>
                         <small class="text-muted" id="endereco">-</small>
                     </div>
-                    <span id="total-rifas" class="text-muted"></span>
+                    <span id="total-fichas" class="text-muted"></span>
                 </li>
             </ul>
 
             <div class="input-group">
                 <input type="text" class="form-control" id="quantidade" placeholder="Quantidade">
                 <div class="input-group-append">
-                    <button type="button" onclick="resgatarQtd()" class="btn btn-secondary">Resgatar quantidade!</button>
-                    <button type="button" onclick="resgatarTudo()" class="btn btn-primary">Resgatar tudo!</button>
+                    <button type="button" onclick="fazerApostaCacaNiqueis()" class="btn btn-secondary">Apostar</button>
                 </div>
             </div>
         </form>
@@ -102,6 +101,146 @@
     </div>
     <!-- /.container -->
   </footer>
+
+  <script>
+  var ficha;
+  var cassino;
+  var userAccount;
+  var acc;
+
+  var tipoAposta;
+  var aposta;
+  var valor;
+
+  function startApp() 
+  {
+    var cassinoAddress = "0xcA3D9B94425AE4bf4d57a5bE6a5bD993201Eb374";
+    var fichaAddress   = "0x6e9D5ecb69de32b17B6212caB20ca91272F0f592";
+
+    cassino = new web3.eth.Contract(abiCassino, cassinoAddress);
+    ficha   = new web3.eth.Contract(abiFicha, fichaAddress);
+
+    var accountInterval = setInterval(function ()
+    {
+      web3.eth.getAccounts().then(function (result) 
+      {
+          acc = result[0];
+      })
+
+      if (acc !== userAccount) 
+      {
+          userAccount = acc;
+          refreshData();
+      } 
+    }, 100);
+  }
+
+  // Métodos do Contrato das Fichas
+  function verFichas() 
+  {
+    return ficha.methods.myBalance().call({from: userAccount});
+  }
+
+  function fazerApostaCacaNiqueis()
+  { 
+    var valor = parseInt(document.getElementById("quantidade").value);
+    var max = parseInt(document.getElementById("total-fichas").innerHTML);
+
+    if( valor > 0 )
+    {
+      if( valor > max )
+      {
+        alert("Você não possui esta quantidade de Fichas.");
+      }
+      else
+      {
+        cassino.methods.apostarCacaNiqueis(valor).send({from: userAccount}).then(function(receipt)
+        {
+          //console.log( receipt );
+          var numeros = receipt["events"]["novoGiroRoleta"]["returnValues"]["resultado"];
+          var ganhou  = receipt["events"]["novoGiroRoleta"]["returnValues"]["ganhou"];
+          var premio  = receipt["events"]["novoGiroRoleta"]["returnValues"]["premio"];
+
+          // console.log( "Numero: " + numero);
+          // console.log( "Cor: " + cor);
+          // console.log( "Ganhou: " + ganhou);
+          // console.log( "Premio: " + premio);
+          
+          console.log(numeros);
+          console.log(ganhou);
+          console.log(premio);
+
+          // Aguarda a roleta parar para notificar e atualizar fichas.
+          // setTimeout(function() 
+          // {
+          //   if( ganhou )
+          //   {
+          //     alert("Você Ganhou " + premio + " Fichas!");
+          //   }
+          //   else
+          //   {
+          //     alert("Você Perdeu!");
+          //   }
+
+          //   refreshData();
+          // }, 10000);
+
+        });
+
+        document.getElementById("quantidade").value = "";
+      }
+    }
+    else
+    {
+      alert("Digite uma quantidade positiva de Fichas.");
+    }
+
+    document.getElementById("quantidade").value = "";
+  }
+
+  function refreshData() 
+  {
+    verFichas().then((result) => {document.getElementById("total-fichas").innerHTML = result;});
+    document.getElementById("endereco").innerHTML = userAccount;
+  }
+
+  // Padrão para detectar um web3 injetado.
+  window.addEventListener('load', function () 
+  {
+
+    web3Provider = null;
+    // Modern dapp browsers...
+    if (window.ethereum) 
+    {
+      web3Provider = window.ethereum;
+
+      try 
+      {
+          // Request account access
+          window.ethereum.enable();
+      } 
+      catch (error) 
+      {
+          // User denied account access...
+          console.error("User denied account access")
+      }
+    }
+    // Legacy dapp browsers...
+    else if (window.web3) 
+    {
+      web3Provider = window.web3.currentProvider;
+    }
+    // If no injected web3 instance is detected, fall back to Ganache
+    else 
+    {
+      console.log('No web3? You should consider trying MetaMask!')
+      web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    }
+
+    web3 = new Web3(web3Provider);
+    startApp()
+  })
+  </script>
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
