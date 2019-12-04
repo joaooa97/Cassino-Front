@@ -17,7 +17,7 @@
 
 
   <!-- Roleta css -->
-  <link rel="stylesheet" href="./css/RoletaStyle.css">
+  <link rel="stylesheet" href="css/RoletaStyle.css">
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -108,7 +108,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" id="quantidade" placeholder="Quantidade">
                 <div class="input-group-append">
-                    <button type="button" onclick="girarRoleta()" class="btn btn-primary">Apostar</button>
+                    <button type="button" onclick="fazerApostaRoleta()" class="btn btn-primary">Apostar</button>
                 </div>
             </div>
         </form>
@@ -165,7 +165,7 @@
     return ficha.methods.myBalance().call({from: userAccount});
   }
 
-  function apostar()
+  function fazerApostaRoleta()
   {    
     var max = parseInt(document.getElementById("total-fichas").innerHTML);
 
@@ -182,6 +182,7 @@
         // Teste para pegar varios retornos.
         cassino.methods.apostarRoleta(tipoAposta,aposta,quant).send({ from: userAccount }).then((numero, cor, venceu, premio) => 
         {
+        	girarRoleta(numero);
         	// Fazer alguma coisa aqui caso ganhe.
 
         	refreshData();

@@ -128,7 +128,7 @@ function createWheel() {
     $(newHold).appendTo(newSlice);
     $(newSlice).appendTo(rinner);
   }
-  //console.log(numberLoc);
+  console.log(numberLoc);
 }
 
 function girarRoleta(valor) 
@@ -139,7 +139,7 @@ function girarRoleta(valor)
   } 
   else 
   {
-    var rndNum = $("input").val();
+    var rndNum = valor;
   }
 
   winningNum = rndNum;
