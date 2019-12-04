@@ -333,7 +333,8 @@
 	        // Teste para pegar varios retornos.
 	        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({from: userAccount}).then(function(receipt)
 	        {
-	        	console.log( receipt );
+	        	//console.log( receipt );
+	        	console.log( receipt["events"]["novoGiroRoleta"] );
 			    // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
 			});
 
