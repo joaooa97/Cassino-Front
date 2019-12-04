@@ -168,7 +168,7 @@ function resetAni()
 
 infinity = true;
 
-function infinitySpin()
+async function infinitySpin()
 {
   //get location
   var temp = numberLoc[0][0] + 4;
