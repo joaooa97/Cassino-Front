@@ -329,7 +329,7 @@
 	      }
 	      else
 	      {
-	      	
+	      	infinitySpin();
 	        // Teste para pegar varios retornos.
 	        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({from: userAccount}).then(function(receipt)
 	        {
@@ -339,29 +339,14 @@
 	        	var ganhou 	= receipt["events"]["novoGiroRoleta"]["returnValues"]["ganhou"];
 	        	var premio  = receipt["events"]["novoGiroRoleta"]["returnValues"]["premio"];
 
-	        	console.log( "Numero: " + numero);
-	        	console.log( "Cor: " + cor);
-	        	console.log( "Ganhou: " + ganhou);
-	        	console.log( "Premio: " + premio);
-			    // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
-			});
+	        	// console.log( "Numero: " + numero);
+	        	// console.log( "Cor: " + cor);
+	        	// console.log( "Ganhou: " + ganhou);
+	        	// console.log( "Premio: " + premio);
+	        	girarRoleta(numero);
+	        	refreshData();
 
-	        /*apostar().then((result) => 
-	        {
-	        	var numero = result[0]; 
-	        	var cor = result[1];
-	        	var ganhou = result[2];
-	        	var premio = result[3];
-
-	        	// alert("Numero: " + result[0]);
-	        	// alert("Cor: " + result[1]);
-	        	// alert("Ganhou: " + result[2]);
-	        	// alert("Premio: " + result[3]);
-	        	
-	        	girarRoleta(numero);*/
-	        	// Fazer alguma coisa aqui caso ganhe.
-
-	        	//refreshData();
+			    });
 
 	        document.getElementById("quantidade").value = "";
 	      }
