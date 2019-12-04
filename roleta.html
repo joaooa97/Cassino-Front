@@ -328,7 +328,7 @@
 		        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount }).then((numero, cor, venceu, premio) => 
 		        {
 		        	alert("Valor chega: " + numero);
-		        	alert("Propertys: " + Object.getOwnPropertyNames(numero) )
+		        	alert("Propertys: " + Object.getOwnPropertyNames(numero) );
 		        	//girarRoleta(numero);
 		        	// Fazer alguma coisa aqui caso ganhe.
 
