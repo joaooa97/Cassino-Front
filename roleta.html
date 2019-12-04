@@ -325,12 +325,13 @@
 		      else
 		      {
 		        // Teste para pegar varios retornos.
-		        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount }).then((retorno) => 
+		        apostar().then((result) => 
 		        {
-		        	alert("Valor 1: " + retorno[0]);
-		        	alert("Valor 2: " + retorno[1]);
-		        	alert("Valor 3: " + retorno[2]);
-		        	alert("Valor 4: " + retorno[3]);
+		        	alert("Valor 1: " + result[0]);
+		        	alert("Valor 2: " + result[1]);
+		        	alert("Valor 3: " + result[2]);
+		        	alert("Valor 4: " + result[3]);
+		        	
 		        	//girarRoleta(numero);
 		        	// Fazer alguma coisa aqui caso ganhe.
 
@@ -348,6 +349,11 @@
 		    document.getElementById("quantidade").value = "";
 		}
 	}
+  }
+
+  function apostar()
+  {
+  	return cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount });        
   }
 
   function refreshData() 
