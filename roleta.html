@@ -334,7 +334,15 @@
 	        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({from: userAccount}).then(function(receipt)
 	        {
 	        	//console.log( receipt );
-	        	console.log( receipt["events"]["novoGiroRoleta"] );
+	        	var numero 	= receipt["events"]["novoGiroRoleta"]["returnValues"]["numero"];
+	        	var cor  	= receipt["events"]["novoGiroRoleta"]["returnValues"]["cor"];
+	        	var ganhou 	= receipt["events"]["novoGiroRoleta"]["returnValues"]["ganhou"];
+	        	var premio  = receipt["events"]["novoGiroRoleta"]["returnValues"]["premio"];
+
+	        	console.log( "Numero: " + numero);
+	        	console.log( "Cor: " + cor);
+	        	console.log( "Ganhou: " + ganhou);
+	        	console.log( "Premio: " + premio);
 			    // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
 			});
 
