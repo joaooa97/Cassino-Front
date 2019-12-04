@@ -327,7 +327,8 @@
 		        // Teste para pegar varios retornos.
 		        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount }).then((numero, cor, venceu, premio) => 
 		        {
-		        	girarRoleta(numero);
+		        	alert("Valor chega: " + numero);
+		        	//girarRoleta(numero);
 		        	// Fazer alguma coisa aqui caso ganhe.
 
 		        	refreshData();
