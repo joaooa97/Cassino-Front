@@ -64,8 +64,8 @@
     <div class="card text-white bg-secondary my-5 py-4 text-center">
       <div class="card-body">
 
-        <p>Resgate de Premios</p>
-        <p class="text-white m-0">No resgate, cada token custa 0.00001 Ether.</p>
+        <p>Roleta</p>
+        <p class="text-white m-0">Escolha um tipo de aposta, sua aposta e digite um valor para apostar.</p>
 
       </div>
     </div>
@@ -79,7 +79,7 @@
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Meus Tokens</h6>
+                        <h6 class="my-0">Minhas Fichas</h6>
                         <small class="text-muted" id="endereco">-</small>
                     </div>
                     <span id="total-fichas" class="text-muted"></span>
@@ -344,18 +344,24 @@
 	        	// console.log( "Premio: " + premio);
 	        	girarRoleta(numero);
 
-	        	if( ganhou )
-	        	{
-	        		alert("Você Ganhou " + premio + "Fichas!");
-	        	}
-	        	else
-	        	{
-	        		alert("Você Perdeu!");
-	        	}
-	        	
-	        	refreshData();
+	        	// Aguarda a roleta para para notificar e atualizar fichas.
+				setTimeout(function() 
+				{
+					if( ganhou )
+		        	{
+		        		alert("Você Ganhou " + premio + " Fichas!");
+		        	}
+		        	else
+		        	{
+		        		alert("Você Perdeu!");
+		        	}
 
-			    });
+	        		refreshData();
+				}, 500);
+	        	
+
+
+			});
 
 	        document.getElementById("quantidade").value = "";
 	      }
