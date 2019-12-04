@@ -358,7 +358,7 @@
 
   function apostar()
   {
-  	return cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount });        
+  	return cassino.methods.apostarRoleta(tipoAposta,aposta,valor).call({ from: userAccount });        
   }
 
   function refreshData() 
