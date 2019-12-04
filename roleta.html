@@ -105,11 +105,55 @@
 				</div>
 			</div>
 
-            <div class="input-group">
-                <input type="text" class="form-control" id="quantidade" placeholder="Quantidade">
+            <div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="IGSelecAposta">Tipo de Aposta</label>
+				</div>
+				<select class="custom-select" onchange="tipoSelecionado()" id="IGSelecAposta">
+					<option selected value="-1">Selecione o Tipo de Aposta...</option>
+					<option value="0">Número</option>
+					<option value="1">Intervalo</option>
+					<option value="2">Cor</option>
+				</select>
+			</div>
+
+			<div class="input-group mb-3" id="groupNumero">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="numeroAposta">Numero</label>
+				</div>
+				<input type="text" class="form-control" id="numeroAposta" placeholder="Numera para Apostar" disabled>
+			</div>
+
+			<div class="input-group mb-3" id="groupIntervalo">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="IGselectIntervalo">Intervalo</label>
+				</div>
+				<select class="custom-select" onchange="intervaloSelecionado()" id="IGselectIntervalo" disabled>
+					<option selected value="-1">Selecione o Intervalo da Aposta...</option>
+					<option value="0">1 - 12</option>
+					<option value="1">13 - 24</option>
+					<option value="2">25 - 36</option>
+				</select>
+			</div>
+
+			<div class="input-group mb-3"id="groupCor">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="IGselectCor">Cor</label>
+				</div>
+				<select class="custom-select"  onchange="corSelecionada()" id="IGselectCor" disabled>
+					<option selected value="-1">Selecione o a cor...</option>
+					<option value="0">Vermelho</option>
+					<option value="1">Preto</option>
+				</select>
+			</div>
+
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" id="quantidade" placeholder="Quantidade de Fichas" disabled>
                 <div class="input-group-append">
-                    <button type="button" onclick="fazerApostaRoleta()" class="btn btn-primary">Apostar</button>
+                	<button id="btnApostar" type="button" onclick="fazerApostaRoleta()" class="btn btn-primary" disabled>Apostar</button>
                 </div>
+            </div>
+
             </div>
         </form>
       </div>
@@ -135,6 +179,10 @@
   var cassino;
   var userAccount;
   var acc;
+
+  var tipoAposta;
+  var aposta;
+  var valor;
 
   function startApp() 
   {
@@ -165,38 +213,137 @@
     return ficha.methods.myBalance().call({from: userAccount});
   }
 
+  function tipoSelecionado()
+  {
+  	var element = document.getElementById("IGSelecAposta");
+	var tipo = parseInt(element.options[element.selectedIndex].value);
+
+	if( tipo >= 0 )
+	{
+		tipoAposta = tipo;
+
+		switch( tipo )
+		{
+			case 0:
+				document.getElementById("numeroAposta").disabled = false;
+				document.getElementById("quantidade").disabled = false;
+				document.getElementById("btnApostar").disabled = false;
+
+				document.getElementById("IGselectIntervalo").disabled = true;
+				document.getElementById("IGselectCor").disabled = true;
+			break;
+
+			case 1:
+				document.getElementById("numeroAposta").disabled = true;
+				document.getElementById("quantidade").disabled = true;
+				document.getElementById("btnApostar").disabled = true;
+
+				document.getElementById("IGselectIntervalo").disabled = false;
+				document.getElementById("IGselectCor").disabled = true;
+			break;
+
+			case 2:
+				document.getElementById("numeroAposta").disabled = true;
+				document.getElementById("quantidade").disabled = true;
+				document.getElementById("btnApostar").disabled = true;
+
+				document.getElementById("IGselectIntervalo").disabled = true;
+				document.getElementById("IGselectCor").disabled = false;
+			break;
+		}
+	}
+	else
+	{
+		document.getElementById("numeroAposta").disabled = true;
+		document.getElementById("IGselectIntervalo").disabled = true;
+		document.getElementById("IGselectCor").disabled = true;
+	}
+  }
+
+  function intervaloSelecionado()
+  {
+  	var element = document.getElementById("IGselectIntervalo");
+	var tipo = parseInt(element.options[element.selectedIndex].value);
+
+	if( tipo >= 0 )
+	{
+		aposta = tipo;
+
+		document.getElementById("quantidade").disabled = false;
+		document.getElementById("btnApostar").disabled = false;
+	}
+	else
+	{
+		document.getElementById("quantidade").disabled = true;
+		document.getElementById("btnApostar").disabled = true;
+	}
+  }
+
+  function corSelecionada()
+  {
+  	var element = document.getElementById("IGselectCor");
+	var tipo = parseInt(element.options[element.selectedIndex].value);
+
+	if( tipo >= 0 )
+	{
+		aposta = tipo;
+
+		document.getElementById("quantidade").disabled = false;
+		document.getElementById("btnApostar").disabled = false;
+	}
+	else
+	{
+		document.getElementById("quantidade").disabled = true;
+		document.getElementById("btnApostar").disabled = true;
+	}
+  }
+
   function fazerApostaRoleta()
   {    
-    var max = parseInt(document.getElementById("total-fichas").innerHTML);
+	valor = document.getElementById("quantidade").value;
 
-    if( quant > 0 )
-    {
-      if( quant > max )
-      {
-        alert("Você não possui esta quantidade de Fichas.");
-      }
-      else
-      {
-        alert("Tentando resgatar " + quant + " fichas, de " + max);
+	if( tipoAposta == 0 )
+	{
+		aposta = document.getElementById("numeroAposta").value;
 
-        // Teste para pegar varios retornos.
-        cassino.methods.apostarRoleta(tipoAposta,aposta,quant).send({ from: userAccount }).then((numero, cor, venceu, premio) => 
-        {
-        	girarRoleta(numero);
-        	// Fazer alguma coisa aqui caso ganhe.
+		if( aposta <= 0 || aposta > 36)
+		{
+			alert("Aposta fora dos limites !");
+		}
+		else
+		{
+		  	alert("Tipo Aposta: " + tipoAposta + " Aposta: " + aposta + " Valor: " + valor);
 
-        	refreshData();
-        });
+		  	var max = parseInt(document.getElementById("total-fichas").innerHTML);
 
-        document.getElementById("quantidade").value = "";
-      }
-    }
-    else
-    {
-      alert("Digite uma quantidade positiva de Fichas.");
-    }
+		    if( quant > 0 )
+		    {
+		      if( quant > max )
+		      {
+		        alert("Você não possui esta quantidade de Fichas.");
+		      }
+		      else
+		      {
+		        // Teste para pegar varios retornos.
+		        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount }).then((numero, cor, venceu, premio) => 
+		        {
+		        	girarRoleta(numero);
+		        	// Fazer alguma coisa aqui caso ganhe.
 
-    document.getElementById("quantidade").value = "";
+		        	refreshData();
+		        });
+
+		        document.getElementById("quantidade").value = "";
+		      }
+		    }
+		    else
+		    {
+		      alert("Digite uma quantidade positiva de Fichas.");
+		    }
+
+		    document.getElementById("quantidade").value = "";
+		}
+	}
   }
 
   function refreshData() 
