@@ -325,19 +325,12 @@
 		      else
 		      {
 		        // Teste para pegar varios retornos.
-		        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount }).then((numero, cor, venceu, premio) => 
+		        cassino.methods.apostarRoleta(tipoAposta,aposta,valor).send({ from: userAccount }).then((retorno) => 
 		        {
-		        	alert("Valor chega: " + numero);
-		        	alert("Propertys: " + Object.getOwnPropertyNames(numero) );
-
-		        	alert("Valor chega: " + cor);
-		        	alert("Propertys: " + Object.getOwnPropertyNames(cor) );
-
-		        	alert("Valor chega: " + venceu);
-		        	alert("Propertys: " + Object.getOwnPropertyNames(venceu) );
-
-		        	alert("Valor chega: " + premio);
-		        	alert("Propertys: " + Object.getOwnPropertyNames(premio) );
+		        	alert("Valor 1: " + retorno[0]);
+		        	alert("Valor 2: " + retorno[1]);
+		        	alert("Valor 3: " + retorno[2]);
+		        	alert("Valor 4: " + retorno[3]);
 		        	//girarRoleta(numero);
 		        	// Fazer alguma coisa aqui caso ganhe.
 
