@@ -333,12 +333,17 @@
 	        // Teste para pegar varios retornos.
 	        apostar().then((result) => 
 	        {
-	        	alert("Valor 1: " + result[0]);
-	        	alert("Valor 2: " + result[1]);
-	        	alert("Valor 3: " + result[2]);
-	        	alert("Valor 4: " + result[3]);
+	        	var numero = result[0]; 
+	        	var cor = result[1];
+	        	var ganhou = result[2];
+	        	var premio = result[3];
+
+	        	alert("Numero: " + result[0]);
+	        	alert("Cor: " + result[1]);
+	        	alert("Ganhou: " + result[2]);
+	        	alert("Premio: " + result[3]);
 	        	
-	        	//girarRoleta(numero);
+	        	girarRoleta(numero);
 	        	// Fazer alguma coisa aqui caso ganhe.
 
 	        	refreshData();
