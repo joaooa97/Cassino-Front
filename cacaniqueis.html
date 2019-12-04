@@ -14,6 +14,12 @@
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3-min-js@1.0.0/web3.min.js"></script>
   <script language="javascript" type="text/javascript" src="abi.js"></script>
 
+  <!-- CacaNiqueis -->
+  <link rel="stylesheet" href="./styles/style.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="./dist/jquery.slotmachine.css" type="text/css" media="screen" />
+  <script src="./dist/slotmachine.js"></script>
+  <script src="./dist/jquery.slotmachine.js"></script>
+        
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -81,6 +87,46 @@
                 </li>
             </ul>
 
+            <div class="list-group mb-3" id="cacaNiqueisContainer">
+              
+              <!-- Slot machine example -->
+              <div id="casino">
+                <div class="content">
+                  <h1>.</h1>
+
+                  <div>
+                    <div id="casino1" class="slotMachine" style="margin-left: -65px;">
+                      <div class="slot slot1"></div>
+                      <div class="slot slot2"></div>
+                      <div class="slot slot3"></div>
+                      <div class="slot slot4"></div>
+                      <div class="slot slot5"></div>
+                      <div class="slot slot6"></div>
+                    </div>
+
+                    <div id="casino2" class="slotMachine">
+                      <div class="slot slot1"></div>
+                      <div class="slot slot2"></div>
+                      <div class="slot slot3"></div>
+                      <div class="slot slot4"></div>
+                      <div class="slot slot5"></div>
+                      <div class="slot slot6"></div>
+                    </div>
+
+                    <div id="casino3" class="slotMachine">
+                      <div class="slot slot1"></div>
+                      <div class="slot slot2"></div>
+                      <div class="slot slot3"></div>
+                      <div class="slot slot4"></div>
+                      <div class="slot slot5"></div>
+                      <div class="slot slot6"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
             <div class="input-group">
                 <input type="text" class="form-control" id="quantidade" placeholder="Quantidade">
                 <div class="input-group-append">
@@ -106,15 +152,32 @@
     <!-- /.container -->
   </footer>
 
+  <script id="codeScript5">
+    casino1 = document.querySelector('#casino1');
+    casino2 = document.querySelector('#casino2');
+    casino3 = document.querySelector('#casino3');
+    
+    mCasino1 = new SlotMachine(casino1, {
+      active: 3,
+      delay: 150
+    });
+
+    mCasino2 = new SlotMachine(casino2, {
+      active: 2,
+      delay: 100
+    });
+
+    mCasino3 = new SlotMachine(casino3, {
+      active: 1,
+      delay: 200
+    });
+  </script>
+
   <script>
   var ficha;
   var cassino;
   var userAccount;
   var acc;
-
-  var tipoAposta;
-  var aposta;
-  var valor;
 
   function startApp() 
   {
@@ -161,35 +224,37 @@
         cassino.methods.apostarCacaNiqueis(valor).send({from: userAccount}).then(function(receipt)
         {
           //console.log( receipt );
-          console.log(receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]);
-
-          var numeros = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["resultado"];
+          var numeros = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["numeros"];
           var ganhou  = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["ganhou"];
           var premio  = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["premio"];
 
-          // console.log( "Numero: " + numero);
-          // console.log( "Cor: " + cor);
-          // console.log( "Ganhou: " + ganhou);
-          // console.log( "Premio: " + premio);
-          
-          console.log(numeros);
-          console.log(ganhou);
-          console.log(premio);
 
-          // Aguarda a roleta parar para notificar e atualizar fichas.
-          // setTimeout(function() 
-          // {
-          //   if( ganhou )
-          //   {
-          //     alert("Você Ganhou " + premio + " Fichas!");
-          //   }
-          //   else
-          //   {
-          //     alert("Você Perdeu!");
-          //   }
+          mCasino1.randomize = function(){ return numeros[0]; };
+          mCasino2.randomize = function(){ return numeros[1]; };
+          mCasino3.randomize = function(){ return numeros[2]; };
 
-          //   refreshData();
-          // }, 10000);
+          mCasino1.shuffle(20);
+          mCasino2.shuffle(15);
+          mCasino3.shuffle(10);
+
+          // console.log(numeros);
+          // console.log(ganhou);
+          // console.log(premio);
+
+          //Aguarda a roleta parar para notificar e atualizar fichas.
+          setTimeout(function() 
+          {
+            if( ganhou )
+            {
+              alert("Você Ganhou " + premio + " Fichas!");
+            }
+            else
+            {
+              alert("Você Perdeu!");
+            }
+
+            refreshData();
+          }, 5000);
 
         });
 
