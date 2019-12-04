@@ -143,6 +143,11 @@
     return ficha.methods.myBalance().call({from: userAccount});
   }
 
+  function resgate(qtdFichas)
+  {
+    return cassino.methods.resgatarEthers(qtdFichas).call({ from: userAccount });
+  }
+
   // Métodos do Contrato do Cassino  
   function resgatarQtd()
   {    
@@ -158,7 +163,7 @@
       else
       {
         alert("Tentando resgatar " + quant + " fichas, de " + max);
-        cassino.methods.resgatarEthers(quant).call({ from: userAccount }).then(refreshData);
+        resgate(quant).then((result) => { alert("Valor Resgatado: " + result);});
         document.getElementById("quantidade").value = "";
       }
     }
@@ -172,7 +177,7 @@
   {    
     var max = parseInt(document.getElementById("total-fichas").innerHTML);
     alert("Tentando resgatar todas as " + max + " fichas.");
-    cassino.methods.resgatarEthers(max).call({ from: userAccount }).then(refreshData);
+    resgate(max).then((result) => { alert("Valor Resgatado: " + result);});
     document.getElementById("quantidade").value = "";
   }
 
