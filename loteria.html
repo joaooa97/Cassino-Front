@@ -164,10 +164,6 @@
     cassino = new web3.eth.Contract(abiCassino, cassinoAddress);
     ficha   = new web3.eth.Contract(abiFicha, fichaAddress);
 
-    console.log("Original: " + result);
-    console.log("Original Size: " + result.length);
-    console.log("Bilhetes: " + stringBilhetes);
-
     var accountInterval = setInterval(function ()
     {
       web3.eth.getAccounts().then(function (result) 
@@ -278,7 +274,7 @@
       console.log("Original: " + result);
       console.log("Original Size: " + result.length);
       console.log("Bilhetes: " + stringBilhetes);
-      
+
       document.getElementById("meus-bilhetes").innerHTML = stringBilhetes;
     });
     
