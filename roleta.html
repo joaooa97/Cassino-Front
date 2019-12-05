@@ -342,26 +342,23 @@
 	        	// console.log( "Cor: " + cor);
 	        	// console.log( "Ganhou: " + ganhou);
 	        	// console.log( "Premio: " + premio);
-	        	girarRoleta(numero);
-
-	        	// Aguarda a roleta parar para notificar e atualizar fichas.
-				setTimeout(function() 
-				{
-					if( ganhou )
-		        	{
-		        		alert("Você Ganhou " + premio + " Fichas!");
-		        	}
-		        	else
-		        	{
-		        		alert("Você Perdeu!");
-		        	}
-
-	        		refreshData();
-				}, 10000);
 	        	
+            girarRoleta(numero).then(
+            function()
+            {
+              if( ganhou )
+              {
+                alert("Você Ganhou " + premio + " Fichas!");
+              }
+              else
+              {
+                alert("Você Perdeu!");
+              }
 
-
-			});
+              refreshData();
+            });
+            
+          });
 
 	        document.getElementById("quantidade").value = "";
 	      }
