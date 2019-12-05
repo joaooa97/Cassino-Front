@@ -112,8 +112,17 @@
           </li>
 
           <li class="list-group-item d-flex justify-content-between">
-            <h6 class="my-0">Ganhadores</h6>
+            <div>
+              <h6 class="my-0">Ganhadores</h6>
+            </div>
             <span class="text-muted" id="ganhadores"></span>
+          </li>
+
+          <li class="list-group-item d-flex justify-content-between">
+            <div>
+              <h6 class="my-0">Bilhete Sorteado</h6>
+            </div>
+            <span class="text-muted" id="bilheteSorteado"></span>
           </li>
 
         </ul>
@@ -254,9 +263,24 @@
       var bilhete       = receipt["events"]["novoVencedoresLoteria"]["returnValues"]["1"];
       var premio        = receipt["events"]["novoVencedoresLoteria"]["returnValues"]["2"];
 
-      console.log(ganhadores);
-      console.log(bilhete);
-      console.log(premio);
+      // console.log(ganhadores);
+      // console.log(bilhete);
+      // console.log(premio);
+
+      document.getElementById("bilheteSorteado").innerHTML = "[" + bilhete + "]";
+
+      stringGanhadores = "";
+
+      for( var i = 0; i < ganhadores.length; i ++ )
+      {
+        stringGanhadores += "[" + ganhadores[i] + "]";
+
+        if( i != (ganhadores.length-1) )
+          stringGanhadores += ", ";
+      }
+
+      document.getElementById("ganhadores").innerHTML = stringGanhadores;
+      
       refreshData();
 
     });
