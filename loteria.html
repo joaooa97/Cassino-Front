@@ -226,10 +226,9 @@
           var numeros    = receipt["events"]["novoBilheteLoteria"]["returnValues"]["numero"];
           var jaComprou  = receipt["events"]["novoBilheteLoteria"]["returnValues"]["jaComprou"];
 
-          console.log(numeros);
-          console.log(jaComprou);
+          // console.log(numeros);
+          // console.log(jaComprou);
           refreshData();
-
         });
       }  
       else
@@ -244,6 +243,23 @@
     document.getElementById("numeros_bilhete4").value = "";
     document.getElementById("numeros_bilhete5").value = "";
 
+  }
+
+  function sortear()
+  {
+    cassino.methods.sortearLoteria(numerosBilhete).send({from: userAccount}).then(function(receipt)
+    {
+      console.log( receipt );
+      var ganhadores    = receipt["events"]["novoVencedoresLoteria"]["returnValues"]["0"];
+      var bilhete       = receipt["events"]["novoVencedoresLoteria"]["returnValues"]["1"];
+      var premio        = receipt["events"]["novoVencedoresLoteria"]["returnValues"]["2"];
+
+      console.log(ganhadores);
+      console.log(bilhete);
+      console.log(premio);
+      refreshData();
+
+    });
   }
 
   function refreshData() 
@@ -265,9 +281,9 @@
           stringBilhetes += ", ";
       }
 
-      console.log("Original: " + result);
-      console.log("Original Size: " + result.length);
-      console.log("Bilhetes: " + stringBilhetes);
+      // console.log("Original: " + result);
+      // console.log("Original Size: " + result.length);
+      // console.log("Bilhetes: " + stringBilhetes);
 
       document.getElementById("meus-bilhetes").innerHTML = stringBilhetes;
     });
