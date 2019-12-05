@@ -247,7 +247,7 @@
 
   function sortear()
   {
-    cassino.methods.sortearLoteria(numerosBilhete).send({from: userAccount}).then(function(receipt)
+    cassino.methods.sortearLoteria().send({from: userAccount}).then(function(receipt)
     {
       console.log( receipt );
       var ganhadores    = receipt["events"]["novoVencedoresLoteria"]["returnValues"]["0"];
