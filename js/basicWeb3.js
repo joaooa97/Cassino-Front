@@ -1,3 +1,6 @@
+var ficha;
+var cassino;
+
 var userAccount;
 var acc;
 
