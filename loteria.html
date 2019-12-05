@@ -229,6 +229,8 @@
           console.log(numeros);
           console.log(jaComprou);
         });
+
+        refreshData();
       }  
       else
       {
@@ -250,7 +252,13 @@
     
     document.getElementById("drawBtn").style.display = "none";
     cassino.methods.isOwner().call({from: userAccount}).then((result) => {if (result) { document.getElementById("drawBtn").style.display = "block"; }});
-    cassino.methods.verMeusBilhetesLoteria().call({from: userAccount}).then((result) => {document.getElementById("meus-bilhetes").innerHTML = result;});
+    
+    cassino.methods.verMeusBilhetesLoteria().call({from: userAccount}).then((result) => 
+    {
+      console.log("Bilhetes: " + result);
+      document.getElementById("meus-bilhetes").innerHTML = result;
+    });
+    
     verPremio().then((result) => {document.getElementById("premio").innerHTML = result + " FCH";});
     document.getElementById("endereco").innerHTML = userAccount;
   }
