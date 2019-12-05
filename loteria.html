@@ -46,7 +46,7 @@
             <a class="nav-link" href="top_premios.html">Top Prêmios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Resgate</a>
+            <a class="nav-link" href="resgate.html">Resgate</a>
           </li>
         </ul>
       </div>
@@ -99,7 +99,7 @@
                 <h6 class="my-0">Meus Bilhetes</h6>
                 <small class="text-muted" id="endereco">-</small>
             </div>
-            <span id="total-fichas" class="text-muted"></span>
+            <span id="meus-bilhetes" class="text-muted"></span>
           </li>
 
 
@@ -120,7 +120,11 @@
 
         <form class="card p-2">
             <div class="input-group">
-              <input type="text" class="form-control" id="quantidade" placeholder="Quantidade">
+              <input type="text" class="form-control" id="numeros_bilhete1" placeholder="Nº 1 - Bilhete">
+              <input type="text" class="form-control" id="numeros_bilhete2" placeholder="Nº 2 - Bilhete">
+              <input type="text" class="form-control" id="numeros_bilhete3" placeholder="Nº 3 - Bilhete">
+              <input type="text" class="form-control" id="numeros_bilhete4" placeholder="Nº 4 - Bilhete">
+              <input type="text" class="form-control" id="numeros_bilhete5" placeholder="Nº 5 - Bilhete">
               <div class="input-group-append">
                 <button type="button" onclick="comprarBilhete()" class="btn btn-secondary">Comprar bilhete!</button>
               </div>
@@ -181,40 +185,60 @@
     return ficha.methods.myBalance().call({from: userAccount});
   }
 
-  function fazerApostaCacaNiqueis()
+  function comprarBilhete()
   { 
-    var valor = parseInt(document.getElementById("quantidade").value);
+    var precoBilhete = 50;
     var max = parseInt(document.getElementById("total-fichas").innerHTML);
-
-    if( valor > 0 )
+   
+    if( precoBilhete > max )
     {
-      if( valor > max )
-      {
-        alert("Você não possui esta quantidade de Fichas.");
-      }
-      else
-      {
-        cassino.methods.apostarCacaNiqueis(valor).send({from: userAccount}).then(function(receipt)
-        {
-          //console.log( receipt );
-          var numeros = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["numeros"];
-          var ganhou  = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["ganhou"];
-          var premio  = receipt["events"]["novoGiroCacaNiqueis"]["returnValues"]["premio"];
-
-          // console.log(numeros);
-          // console.log(ganhou);
-          // console.log(premio);
-        });
-
-        document.getElementById("quantidade").value = "";
-      }
+      alert("Você não possui Fichas suficientes para comprar um bilhete.");
     }
     else
     {
-      alert("Digite uma quantidade positiva de Fichas.");
+
+      bilheteValido = true;
+
+      numerosBilhete[5];
+
+      numerosBilhete[0] = parseInt(document.getElementById("numeros_bilhete1").value);
+      numerosBilhete[1] = parseInt(document.getElementById("numeros_bilhete2").value);
+      numerosBilhete[2] = parseInt(document.getElementById("numeros_bilhete3").value);
+      numerosBilhete[3] = parseInt(document.getElementById("numeros_bilhete4").value);
+      numerosBilhete[4] = parseInt(document.getElementById("numeros_bilhete5").value);
+
+      for(var i = 0; i < 5; i++)
+      {
+        if( numerosBilhete[i] < 0 || numerosBilhete[i] > 5 )
+        {
+          bilheteValido = false;
+          break;
+        }
+      }
+
+      if( bilheteValido )
+      {
+        console.log("Bilhete para Comprar: " + numerosBilhete);
+
+        cassino.methods.comprarBilheteLoteria(numerosBilhete).send({from: userAccount}).then(function(receipt)
+        {
+          //console.log( receipt );
+          var numeros    = receipt["events"]["novoBilheteLoteria"]["returnValues"]["numero"];
+          var jaComprou  = receipt["events"]["novoBilheteLoteria"]["returnValues"]["jaComprou"];
+
+          console.log(numeros);
+          console.log(jaComprou);
+        });
+
+      }      
     }
 
-    document.getElementById("quantidade").value = "";
+    document.getElementById("numeros_bilhete1").value = "";
+    document.getElementById("numeros_bilhete2").value = "";
+    document.getElementById("numeros_bilhete3").value = "";
+    document.getElementById("numeros_bilhete4").value = "";
+    document.getElementById("numeros_bilhete5").value = "";
+
   }
 
   function refreshData() 
@@ -223,8 +247,14 @@
     
     document.getElementById("drawBtn").style.display = "none";
     cassino.methods.isOwner().call({from: userAccount}).then((result) => {if (result) { document.getElementById("drawBtn").style.display = "block"; }});
-
+    cassino.methods.verMeusBilhetesLoteria().call({from: userAccount}).then((result) => {document.getElementById("meus-bilhetes").innerHTML = result;});
+    verPremio().then((result) => {document.getElementById("premio").innerHTML = result + " FCH";});
     document.getElementById("endereco").innerHTML = userAccount;
+  }
+
+  function verPremio()
+  {
+    return cassino.methods.premioAtualLoteria().call({from: userAccount});
   }
 
   // Padrão para detectar um web3 injetado.
