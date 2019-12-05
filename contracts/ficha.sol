@@ -1,5 +1,5 @@
 // Nome: José Diogo Bezerra de Souza
-// Conta do contrato: <link>
+// Conta do contrato: <https://ropsten.etherscan.io/address/0x6e9D5ecb69de32b17B6212caB20ca91272F0f592>
 
 pragma  solidity  ^0.4.25; // Fique a vontade caso queira utilizar outra versão.
 

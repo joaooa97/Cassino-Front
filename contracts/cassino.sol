@@ -1,5 +1,5 @@
 // Nome: José Diogo Bezerra de Souza
-// Conta do contrato: <link>
+// Conta do contrato: <https://ropsten.etherscan.io/address/0x5cefd05d0255759d972b58c7ae2b8bbaffd652eb>
 
 pragma  solidity  ^0.4.25; // Fique a vontade caso queira utilizar outra versão.
 pragma experimental ABIEncoderV2;
@@ -44,8 +44,13 @@ contract Cassino is JogoCassino
     address CacaNiqueisAddress = 0x288B47fd79DbBF22A749C1864Da2d7d8Af253C8C;
     CacaNiqueisInterface CacaNiqueisContract = CacaNiqueisInterface(CacaNiqueisAddress);
     
-    address LoteriaAddress = 0x3B42b25C5acdd4E96664b1d169558824A5327497;
+    address LoteriaAddress = 0x782977207a16cDC1Eb56A6923D69Eb15D9EF5ffA;
     LoteriaInterface LoteriaContract = LoteriaInterface(LoteriaAddress);
+    
+    event novoGiroRoleta(uint8 numero, uint8 cor, bool ganhou, uint premio);
+    event novoGiroCacaNiqueis(uint8[3] numeros, bool ganhou, uint premio);
+    event novoBilheteLoteria(uint8[5] numero, bool jaComprou);
+    event novoVencedoresLoteria(address[], uint8[5], uint);
     
     // Tipos Aposta Roleta
 	uint8 constant Individual = 0;
@@ -67,6 +72,11 @@ contract Cassino is JogoCassino
 	
 	constructor() public 
 	{
+	}
+	
+	function isOwner() external view returns (bool)
+	{
+	    return (owner == msg.sender);
 	}
 	
 	function mudarValoresFCH(uint novoCompra, uint novoResgate ) external onlyOwner
@@ -183,6 +193,8 @@ contract Cassino is JogoCassino
 	        sacarPremioRoleta();
 	    }
 	    
+	    emit novoGiroRoleta(numero,cor,ganhou,premio);
+	    
 	    return (numero, cor, ganhou, premio);
 	}
 	
@@ -244,6 +256,8 @@ contract Cassino is JogoCassino
 	        premio = sacarPremioCacaNiqueis();
 	    }
 	    
+	    emit novoGiroCacaNiqueis(resultado,ganhou,premio);
+	    
 	    return (resultado, ganhou, premio); 
 	}
 	
@@ -281,7 +295,11 @@ contract Cassino is JogoCassino
 	    // WTF, só funcionou assim.
 	    uint8[5] memory bilheteF = bilhete;
 	    
-	    return LoteriaContract.comprarBilhete(bilheteF);
+	    bool jaComprou = LoteriaContract.comprarBilhete(bilheteF);
+	    
+	    emit novoBilheteLoteria(bilheteF, jaComprou);
+	    
+	    return jaComprou;
 	}
 	
 	function verMeusBilhetesLoteria() external view returns (uint8[][])
@@ -291,6 +309,14 @@ contract Cassino is JogoCassino
 	
 	function sortearLoteria() external onlyOwner returns (address[], uint8[5], uint)
 	{
-	    return LoteriaContract.sortear();
+	    address[] memory vencedores;
+	    uint8[5] memory bilheteVencedor;
+	    uint premio;
+	    
+	    (vencedores, bilheteVencedor, premio) = LoteriaContract.sortear();
+	    
+	    emit novoVencedoresLoteria(vencedores, bilheteVencedor, premio);
+	    
+	    return (vencedores, bilheteVencedor, premio);
 	}
 }
