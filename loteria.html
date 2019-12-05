@@ -257,17 +257,11 @@
     {
       stringBilhetes = "";
 
-      var limit = (result.length/5);
-
-      for( var i = 0; i < limit; i ++ )
+      for( var i = 0; i < result.length; i ++ )
       {
-        stringBilhetes += "[" + result[(5*i)] + ", ";
-        stringBilhetes +=       result[(5*i)+1] + ", ";
-        stringBilhetes +=       result[(5*i)+2] + ", ";
-        stringBilhetes +=       result[(5*i)+3] + ", ";
-        stringBilhetes +=       result[(5*i)+4] + "]";
+        stringBilhetes += "[" + result[i] + "]";
 
-        if( i != (limit-1) )
+        if( i != (result.length-1) )
           stringBilhetes += ", ";
       }
 
