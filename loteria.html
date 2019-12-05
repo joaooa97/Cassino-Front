@@ -164,6 +164,10 @@
     cassino = new web3.eth.Contract(abiCassino, cassinoAddress);
     ficha   = new web3.eth.Contract(abiFicha, fichaAddress);
 
+    console.log("Original: " + result);
+    console.log("Original Size: " + result.length);
+    console.log("Bilhetes: " + stringBilhetes);
+
     var accountInterval = setInterval(function ()
     {
       web3.eth.getAccounts().then(function (result) 
@@ -257,17 +261,24 @@
     {
       stringBilhetes = "";
 
-      for( var i = 0; i < (result.length/5); i ++ )
+      var limit = (result.length/5);
+
+      for( var i = 0; i < limit; i ++ )
       {
         stringBilhetes += "[" + result[(5*i)] + ", ";
         stringBilhetes +=       result[(5*i)+1] + ", ";
         stringBilhetes +=       result[(5*i)+2] + ", ";
         stringBilhetes +=       result[(5*i)+3] + ", ";
         stringBilhetes +=       result[(5*i)+4] + "]";
+
+        if( i != (limit-1) )
+          stringBilhetes += ", ";
       }
 
       console.log("Original: " + result);
+      console.log("Original Size: " + result.length);
       console.log("Bilhetes: " + stringBilhetes);
+      
       document.getElementById("meus-bilhetes").innerHTML = stringBilhetes;
     });
     
