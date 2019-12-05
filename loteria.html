@@ -228,9 +228,9 @@
 
           console.log(numeros);
           console.log(jaComprou);
-        });
+          refreshData();
 
-        refreshData();
+        });
       }  
       else
       {
@@ -255,8 +255,19 @@
     
     cassino.methods.verMeusBilhetesLoteria().call({from: userAccount}).then((result) => 
     {
-      console.log("Bilhetes: " + result);
-      document.getElementById("meus-bilhetes").innerHTML = result;
+      stringBilhetes = "";
+
+      for( var i = 0; i < (result.legth/5); i ++ )
+      {
+        stringBilhetes += "[" + result[(5*i)] + ", ";
+        stringBilhetes +=       result[(5*i)+1] + ", ";
+        stringBilhetes +=       result[(5*i)+2] + ", ";
+        stringBilhetes +=       result[(5*i)+3] + ", ";
+        stringBilhetes +=       result[(5*i)+4] + "]";
+      }
+
+      console.log("Bilhetes: " + stringBilhetes);
+      document.getElementById("meus-bilhetes").innerHTML = stringBilhetes;
     });
     
     verPremio().then((result) => {document.getElementById("premio").innerHTML = result + " FCH";});
